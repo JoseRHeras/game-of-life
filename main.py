@@ -1,9 +1,8 @@
-from visualizer import Board
+from visualizer import Game
 
 def main():
-    board = Board(cells=20)
-
-    board.run_loop()
+    game = Game()
+    game.run()
     
 if __name__ == '__main__':
     main()
