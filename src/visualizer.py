@@ -1,5 +1,5 @@
 import tkinter as tk
-from game_of_life import CellContainer
+from src.game_of_life import CellContainer
 
 
 class Game:
@@ -44,7 +44,7 @@ class ControlBar:
 
     def _start_animation(self) -> None:
         self.target.evolve_and_update_container()
-        self.animation_id = self.component_frame.after(500, self._start_animation)
+        self.animation_id = self.component_frame.after(1500, self._start_animation)
 
     def _stop_animation(self) -> None:
         self.component_frame.after_cancel(self.animation_id)

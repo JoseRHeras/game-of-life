@@ -1,4 +1,4 @@
-from visualizer import Game
+from src.visualizer import Game
 
 def main():
     game = Game()

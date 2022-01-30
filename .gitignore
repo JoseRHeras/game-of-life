@@ -146,6 +146,3 @@ cython_debug/
 
 # Editor
 .vscode/
-
-# Micell
-test.pytest_cache

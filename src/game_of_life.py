@@ -1,4 +1,3 @@
-from doctest import master
 import random
 import numpy as np
 import tkinter as tk
@@ -77,13 +76,13 @@ class CellContainer:
     
     def __init__(self, master: tk.Tk) -> None:
         self.master: tk.Tk = master
-        self.game_of_life: GameOfLife = GameOfLife(size=40)
+        self.game_of_life: GameOfLife = GameOfLife(size=80)
         self._initialize_canvas()
         self._populate_container()
 
 
     def _initialize_canvas(self) -> None:
-        self.cell_size = 25
+        self.cell_size = 10
         canvas_size = self.game_of_life.size * self.cell_size
 
         self.canvas = tk.Canvas(master=self.master, width=canvas_size, height=canvas_size, bg="white")
