@@ -1,4 +1,4 @@
-from src.visualizer import Game
+from src.conway_game import Game
 
 def main():
     game = Game()

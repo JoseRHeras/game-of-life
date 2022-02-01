@@ -1,33 +1,52 @@
-from cgitb import text
-from doctest import master
 import tkinter as tk
-from src.game_of_life import CellContainer
+from src.game_of_life_logic import GameOfLife
 
 
-class Game:
-    def __init__(self) -> None:
-        self._initialize_graphical_window()
-        self._build_widgets()
+class GameVisualizer:
+    
+    def __init__(self, master: tk.Tk) -> None:
+        self.master: tk.Tk = master
+        self.game_of_life: GameOfLife = GameOfLife(size=80)
+        self._initialize_canvas()
+        self._populate_container()
 
-    def _initialize_graphical_window(self) -> None:
-        self.root: tk.Tk = tk.Tk()
-        self.root.title(string="Conway's Game Of Life")
-        self.root.config( padx=10, pady=5 )
 
-    def _build_widgets(self) -> None:
-        self.cell_container: CellContainer = CellContainer(master=self.root)
-        self.control_bar: ControlBar = ControlBar(
-            master=self.root, target=self.cell_container
-        )
+    def _initialize_canvas(self) -> None:
+        self.cell_size = 10
+        canvas_size = self.game_of_life.size * self.cell_size
 
-    def run(self) -> None:
-        self.root.mainloop()
+        self.canvas = tk.Canvas(master=self.master, width=canvas_size, height=canvas_size, bg="white")
+        self.canvas.pack()
 
+    def _populate_container(self) -> None:
+        self.canvas.delete("all")
+        sample_size = self.game_of_life.size
+        
+        coordinate_y1, coordinate_y2 = 0, self.cell_size
+         
+        for row in range(sample_size):
+            coordinate_x1, coordinate_x2 = 0, self.cell_size
+            for col in range(sample_size):
+                color = "Black" if self.game_of_life.is_cell_alive(row, col) else "White"
+                self.canvas.create_rectangle(coordinate_x1, coordinate_y1, coordinate_x2, coordinate_y2, fill=color)
+                coordinate_x1 += self.cell_size
+                coordinate_x2 += self.cell_size
+
+            coordinate_y1 += self.cell_size
+            coordinate_y2 += self.cell_size
+
+    def reset_container(self) -> None:
+        self.game_of_life.discard_and_generate_table()
+        self._populate_container()
+
+    def evolve_and_update_container(self) -> None:
+        self.game_of_life.mutate_table_to_next_stage()
+        self._populate_container()
 
 class ControlBar:
-    def __init__(self, master: tk.Tk, target: CellContainer) -> None:
+    def __init__(self, master: tk.Tk, target: GameVisualizer) -> None:
         self.master: tk.Tk = master
-        self.target: CellContainer = target
+        self.target: GameVisualizer = target
         self._build_graphical_component()
 
     def _build_graphical_component(self) -> None:
@@ -78,3 +97,5 @@ class ControlBar:
         self.reset_button.config(state=tk.DISABLED)
         self.start_button.config(state=tk.NORMAL)
         self.target.reset_container()
+
+
